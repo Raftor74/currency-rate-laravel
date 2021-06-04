@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Currency extends Model
+class CurrencyHistory extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'char_code', 'name', 'rate', 'relevant_on',
+        'rate', 'relevant_on',
     ];
 
     protected $dates = [
         'relevant_on',
     ];
 
-    public function history()
+    public function currency()
     {
-        return $this->hasMany(CurrencyHistory::class, 'currency_id');
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
 }
