@@ -31,6 +31,14 @@ class CurrencyTest extends TestCase
     }
 
     /** @test */
+    public function non_existent_currency_raise_404()
+    {
+        $response = $this->json('GET', route('api.currency.show', 999));
+
+        $response->assertStatus(404);
+    }
+
+    /** @test */
     public function currency_list_has_correct_structure()
     {
         Currency::factory(20)->create();
