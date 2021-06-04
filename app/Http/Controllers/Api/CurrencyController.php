@@ -11,7 +11,9 @@ class CurrencyController extends Controller
 {
     public function index(Request $request)
     {
-        return CurrencyResource::collection(Currency::all());
+        $perPage = $request->get('perPage', 20);
+        $currencies = Currency::query()->paginate($perPage);
+        return CurrencyResource::collection($currencies);
     }
 
     public function show($id)

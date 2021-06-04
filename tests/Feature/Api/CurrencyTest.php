@@ -4,6 +4,7 @@ namespace Tests\Feature\Api;
 
 use App\Models\Currency;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class CurrencyTest extends TestCase
@@ -43,12 +44,28 @@ class CurrencyTest extends TestCase
     {
         Currency::factory(20)->create();
 
-        $response = $this->json('GET', route('api.currency.list'));
+        $response = $this->json('GET', route('api.currency.list'), ['perPage' => 50]);
 
         $response->assertJsonCount(20, 'data');
         $response->assertJsonStructure([
             'data' => ['*' => $this->getExpectedListItemJsonStructure()],
         ]);
+    }
+
+    /** @test */
+    public function currency_list_has_correct_pagination()
+    {
+        $perPage = 5;
+        $page = 2;
+        $currencyItemsCount = 20;
+        Currency::factory($currencyItemsCount)->create();
+
+        $response = $this->json('GET', route('api.currency.list'), ['perPage' => $perPage, 'page' => $page]);
+
+        $response->assertJsonCount($perPage, 'data');
+        $response->assertJsonPath('meta.current_page', $page);
+        $response->assertJsonPath('meta.per_page', $perPage);
+        $response->assertJsonPath('meta.total', $currencyItemsCount);
     }
 
     /** @test */
