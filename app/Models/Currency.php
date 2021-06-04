@@ -21,4 +21,16 @@ class Currency extends Model
     {
         return $this->hasMany(CurrencyHistory::class, 'currency_id');
     }
+
+    /**
+     * Сохраняет текущие значения курса валюты в историю
+     * @return CurrencyHistory
+     */
+    public function saveToHistory(): CurrencyHistory
+    {
+        return $this->history()->create([
+            'rate' => $this->rate,
+            'relevant_on' => $this->relevant_on,
+        ]);
+    }
 }
