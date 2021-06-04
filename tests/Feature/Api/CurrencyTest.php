@@ -4,7 +4,6 @@ namespace Tests\Feature\Api;
 
 use App\Models\Currency;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class CurrencyTest extends TestCase
