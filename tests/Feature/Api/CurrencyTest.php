@@ -17,7 +17,7 @@ class CurrencyTest extends TestCase
     {
         Currency::factory(20)->create();
 
-        $response = $this->json('GET', route('api.currency.list'));
+        $response = $this->json('GET', $this->getCurrencyListRouteUrl());
 
         $response->assertStatus(401);
     }
@@ -27,7 +27,7 @@ class CurrencyTest extends TestCase
     {
         $currency = Currency::factory()->create();
 
-        $response = $this->json('GET', route('api.currency.show', $currency));
+        $response = $this->json('GET', $this->getCurrencyDetailRouteUrl($currency->id));
 
         $response->assertStatus(401);
     }
@@ -38,7 +38,7 @@ class CurrencyTest extends TestCase
         Sanctum::actingAs(User::factory()->create());
         Currency::factory(20)->create();
 
-        $response = $this->json('GET', route('api.currency.list'));
+        $response = $this->json('GET', $this->getCurrencyListRouteUrl());
 
         $response->assertStatus(200);
     }
@@ -49,7 +49,7 @@ class CurrencyTest extends TestCase
         Sanctum::actingAs(User::factory()->create());
         $currency = Currency::factory()->create();
 
-        $response = $this->json('GET', route('api.currency.show', $currency));
+        $response = $this->json('GET', $this->getCurrencyDetailRouteUrl($currency->id));
 
         $response->assertStatus(200);
     }
@@ -58,7 +58,7 @@ class CurrencyTest extends TestCase
     public function non_existent_currency_raise_404()
     {
         Sanctum::actingAs(User::factory()->create());
-        $response = $this->json('GET', route('api.currency.show', 999));
+        $response = $this->json('GET', $this->getCurrencyDetailRouteUrl(999));
 
         $response->assertStatus(404);
     }
@@ -69,7 +69,7 @@ class CurrencyTest extends TestCase
         Sanctum::actingAs(User::factory()->create());
         Currency::factory(20)->create();
 
-        $response = $this->json('GET', route('api.currency.list'), ['perPage' => 50]);
+        $response = $this->json('GET', $this->getCurrencyListRouteUrl(), ['perPage' => 50]);
 
         $response->assertJsonCount(20, 'data');
         $response->assertJsonStructure([
@@ -86,7 +86,7 @@ class CurrencyTest extends TestCase
         Sanctum::actingAs(User::factory()->create());
         Currency::factory($currencyItemsCount)->create();
 
-        $response = $this->json('GET', route('api.currency.list'), ['perPage' => $perPage, 'page' => $page]);
+        $response = $this->json('GET', $this->getCurrencyListRouteUrl(), ['perPage' => $perPage, 'page' => $page]);
 
         $response->assertJsonCount($perPage, 'data');
         $response->assertJsonPath('meta.current_page', $page);
@@ -100,11 +100,21 @@ class CurrencyTest extends TestCase
         Sanctum::actingAs(User::factory()->create());
         $currency = Currency::factory()->create();
 
-        $response = $this->json('GET', route('api.currency.show', $currency));
+        $response = $this->json('GET', $this->getCurrencyDetailRouteUrl($currency->id));
 
         $response->assertJsonStructure([
             'data' => $this->getExpectedDetailItemJsonStructure(),
         ]);
+    }
+
+    public function getCurrencyListRouteUrl(): string
+    {
+        return '/api/currencies';
+    }
+
+    public function getCurrencyDetailRouteUrl(int $currencyId): string
+    {
+        return '/api/currency/' . $currencyId;
     }
 
     protected function getExpectedListItemJsonStructure(): array
