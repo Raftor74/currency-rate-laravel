@@ -13,8 +13,13 @@ use App\Http\Controllers\Api;
 |
 */
 Route::name('api.')->group(function () {
-    Route::get('/currencies', [Api\CurrencyController::class, 'index'])->name('currency.list');
-    Route::get('/currency/{id}', [Api\CurrencyController::class, 'show'])->name('currency.show');
+
+    Route::post('/login', [Api\AuthController::class, 'login'])->name('login');
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/currencies', [Api\CurrencyController::class, 'index'])->name('currency.list');
+        Route::get('/currency/{id}', [Api\CurrencyController::class, 'show'])->name('currency.show');
+    });
 });
 
 
