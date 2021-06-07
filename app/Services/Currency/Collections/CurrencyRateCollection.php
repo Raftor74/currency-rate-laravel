@@ -4,7 +4,7 @@ namespace App\Services\Currency\Collections;
 
 use App\Services\Currency\Models\CurrencyRate;
 
-class CurrencyRateCollection implements \Iterator
+class CurrencyRateCollection implements \Iterator, \Countable
 {
     private $collection = [];
 
@@ -23,12 +23,17 @@ class CurrencyRateCollection implements \Iterator
         return $this->collection;
     }
 
+    public function count(): int
+    {
+        return $this->count();
+    }
+
     public function getByCharCode(string $charCode): ?CurrencyRate
     {
         return $this->collection[$charCode] ?? null;
     }
 
-    public function getCurrencyCharCodes():array
+    public function getCurrencyCharCodes(): array
     {
         return array_unique(array_keys($this->collection));
     }
