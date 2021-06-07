@@ -5,7 +5,7 @@ namespace Tests\Unit\Currency;
 use App\Services\Currency\Models\CurrencyRate;
 use PHPUnit\Framework\TestCase;
 
-class CurrencyRateModelTest extends TestCase
+class CurrencyRateTest extends TestCase
 {
     /**
      * @test
@@ -13,7 +13,7 @@ class CurrencyRateModelTest extends TestCase
      */
     public function unit_price_calculated_correctly(float $expected, int $quantity, float $price)
     {
-        $currencyRate = new CurrencyRate('AMD', $quantity, $price);
+        $currencyRate = new CurrencyRate('AMD', 'Test currency', $quantity, $price);
 
         $this->assertEquals($expected, $currencyRate->unitPrice());
     }
