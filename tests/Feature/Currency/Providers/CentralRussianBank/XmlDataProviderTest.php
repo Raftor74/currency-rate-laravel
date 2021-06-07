@@ -1,6 +1,6 @@
 <?php
 
-namespace Currency\Providers\CentralRussianBank;
+namespace Tests\Feature\Currency\Providers\CentralRussianBank;
 
 use App\Services\Currency\Exceptions\CurrencyRateNotFoundException;
 use App\Services\Currency\Providers\CentralRussianBank\XmlClient;
