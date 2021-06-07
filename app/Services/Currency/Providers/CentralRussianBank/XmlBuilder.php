@@ -37,7 +37,7 @@ class XmlBuilder
             return null;
         }
 
-        return $this->makeCurrencyRate($matches[0]);
+        return $this->makeCurrencyRate(array_shift($matches));
     }
 
     protected function makeCurrencyRateXmlNodes(\SimpleXMLElement $xml): array
