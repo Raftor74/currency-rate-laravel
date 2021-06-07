@@ -23,7 +23,7 @@ class CurrencyRateStorageTest extends TestCase
         /** @var CurrencyRateStorage $storage */
         $storage = $this->app->make(CurrencyRateStorage::class);
 
-        $currency = $storage->storeCurrencyRate($currencyRate)->refresh();
+        $currency = $storage->updateOrCreateCurrencyRate($currencyRate)->refresh();
 
         $this->assertEquals($currency->char_code, $currencyRate->charCodeUpper());
         $this->assertEquals($currency->name, $currencyRate->name());
@@ -44,7 +44,7 @@ class CurrencyRateStorageTest extends TestCase
         // act
         /** @var CurrencyRateStorage $storage */
         $storage = $this->app->make(CurrencyRateStorage::class);
-        $updatedCurrency = $storage->storeCurrencyRate($currencyRate)->refresh();
+        $updatedCurrency = $storage->updateOrCreateCurrencyRate($currencyRate)->refresh();
 
         // assert
         $history = $updatedCurrency->history()->first();

@@ -17,7 +17,7 @@ class CurrencyRateStorage
         foreach ($currencies as $currency) {
             $charCode = $currency->char_code;
             $currencyRate = $collection->getByCharCode($charCode);
-            $this->storeCurrencyRate($currencyRate, $currency);
+            $this->updateCurrencyRate($currencyRate, $currency);
             $existedCharCodes[] = $charCode;
         }
 
@@ -25,30 +25,49 @@ class CurrencyRateStorage
 
         foreach ($nonExistedCharCodes as $charCode) {
             $currencyRate = $collection->getByCharCode($charCode);
-            $this->storeCurrencyRate($currencyRate);
+            $this->createCurrencyRate($currencyRate);
         }
     }
 
-    public function storeCurrencyRate(CurrencyRate $currencyRate, ?Currency $currency = null): Currency
+    public function createCurrencyRate(CurrencyRate $currencyRate): Currency
     {
-        /** @var Currency $_currency */
-        $_currency = (!is_null($currency))
-            ? $currency
-            : Currency::query()->where('char_code', $currencyRate->charCodeUpper())->firstOrNew();
+        $attributes = $this->makeCurrencyRateStoreAttributes($currencyRate);
 
-        $attributes = [
+        /** @var Currency $currency */
+        $currency = Currency::query()->create($attributes);
+
+        return $currency;
+    }
+
+    public function updateCurrencyRate(CurrencyRate $currencyRate, Currency $currency): Currency
+    {
+        $attributes = $this->makeCurrencyRateStoreAttributes($currencyRate);
+
+        $currency->saveToHistory();
+        $currency->fill($attributes)->save();
+
+        return $currency;
+    }
+
+    public function updateOrCreateCurrencyRate(CurrencyRate $currencyRate): Currency
+    {
+        /** @var Currency $currency */
+        $currency = Currency::query()
+            ->where('char_code', $currencyRate->charCodeUpper())
+            ->first();
+
+        return ($currency)
+            ? $this->updateCurrencyRate($currencyRate, $currency)
+            : $this->createCurrencyRate($currencyRate);
+    }
+
+    public function makeCurrencyRateStoreAttributes(CurrencyRate $currencyRate): array
+    {
+        return [
             'char_code' => $currencyRate->charCodeUpper(),
             'name' => $currencyRate->name(),
             'rate' => $currencyRate->unitPrice(),
             'relevant_on' => $currencyRate->relevantOn(),
         ];
-
-        if ($_currency->id) {
-            $_currency->saveToHistory();
-        }
-
-        $_currency->fill($attributes)->save();
-
-        return $_currency;
     }
 }

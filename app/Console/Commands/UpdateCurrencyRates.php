@@ -63,7 +63,7 @@ class UpdateCurrencyRates extends Command
     protected function updateByCharCode(string $charCode)
     {
         $this->info(sprintf('Starting to update the currency with char code %s', $charCode));
-        $this->storage->storeCurrencyRate($this->dataProvider->fetchCurrencyRateByCharCode($charCode));
+        $this->storage->updateOrCreateCurrencyRate($this->dataProvider->fetchCurrencyRateByCharCode($charCode));
         $this->info('Done');
     }
 }
