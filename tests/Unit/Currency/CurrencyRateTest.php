@@ -13,7 +13,7 @@ class CurrencyRateTest extends TestCase
      */
     public function unit_price_calculated_correctly(float $expected, int $quantity, float $price)
     {
-        $currencyRate = new CurrencyRate('AMD', 'Test currency', $quantity, $price);
+        $currencyRate = CurrencyRate::make('AMD', 'Test currency', $quantity, $price);
 
         $this->assertEquals($expected, $currencyRate->unitPrice());
     }

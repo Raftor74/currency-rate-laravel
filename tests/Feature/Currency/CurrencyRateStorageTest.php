@@ -18,7 +18,7 @@ class CurrencyRateStorageTest extends TestCase
     public function storage_correctly_update_currency_rate_by_char_code_without_history()
     {
         $currencyCharCode = 'USD';
-        $currencyRate = new CurrencyRate($currencyCharCode, 'Доллар США', 1, 74);
+        $currencyRate = CurrencyRate::make($currencyCharCode, 'Доллар США', 1, 74);
 
         /** @var CurrencyRateStorage $storage */
         $storage = $this->app->make(CurrencyRateStorage::class);
@@ -35,7 +35,7 @@ class CurrencyRateStorageTest extends TestCase
     {
         // arrange
         $currencyCharCode = 'USD';
-        $currencyRate = new CurrencyRate($currencyCharCode, 'Доллар США', 1, 74);
+        $currencyRate = CurrencyRate::make($currencyCharCode, 'Доллар США', 1, 74);
         $existedCurrency = Currency::factory()->create([
             'char_code' => $currencyCharCode,
             'rate' => 80.5,
@@ -65,8 +65,8 @@ class CurrencyRateStorageTest extends TestCase
         // arrange
         $existedCurrencyCharCode = 'USD';
         $newCurrencyCharCode = 'AZK';
-        $existedCurrencyRate = new CurrencyRate($existedCurrencyCharCode, 'Доллар США', 1, 74);
-        $newCurrencyRate = new CurrencyRate($newCurrencyCharCode, 'Тестовая валюта', 1, 32);
+        $existedCurrencyRate = CurrencyRate::make($existedCurrencyCharCode, 'Доллар США', 1, 74);
+        $newCurrencyRate =  CurrencyRate::make($newCurrencyCharCode, 'Тестовая валюта', 1, 32);
         $currencyRateCollection = (new CurrencyRateCollection())
             ->add($existedCurrencyRate)
             ->add($newCurrencyRate);

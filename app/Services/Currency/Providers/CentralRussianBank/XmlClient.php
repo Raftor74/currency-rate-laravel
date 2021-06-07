@@ -15,7 +15,7 @@ class XmlClient
         $this->requestClient = $requestClient;
     }
 
-    public function fetchContent()
+    public function fetchContent(): string
     {
         try {
             $response = $this->requestClient->get($this->serviceUrl());
@@ -39,7 +39,7 @@ class XmlClient
 
     public function serviceUrl(): string
     {
-        return 'http://www.cbr.ru/scripts/XML_daily.asp';
+        return 'https://www.cbr.ru/scripts/XML_daily.asp';
     }
 
 }

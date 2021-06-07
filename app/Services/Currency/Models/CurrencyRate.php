@@ -13,12 +13,8 @@ class CurrencyRate
     private $price;
     private $relevantOn;
 
-    public function __construct(string $charCode, string $name, int $quantity, float $price, Carbon $relevantOn = null)
+    public function __construct(string $charCode, string $name, int $quantity, float $price, ?Carbon $relevantOn)
     {
-        if ($quantity < 1) {
-            throw new InvalidParameterException('Quantity cannot be less than 1');
-        }
-
         $this->name = $name;
         $this->quantity = $quantity;
         $this->charCode = $charCode;
@@ -60,4 +56,22 @@ class CurrencyRate
     {
         return $this->relevantOn;
     }
-}
+
+    /**
+     * @param string $charCode
+     * @param string $name
+     * @param int $quantity
+     * @param float $price
+     * @param Carbon|null $relevantOn
+     * @return CurrencyRate
+     * @throws InvalidParameterException
+     */
+    public static function make(string $charCode, string $name, int $quantity, float $price, Carbon $relevantOn = null): CurrencyRate
+    {
+        if ($quantity < 1) {
+            throw new InvalidParameterException('Quantity cannot be less than 1');
+        }
+
+        return new static($charCode, $name, $quantity, $price, $relevantOn);
+    }
+ }

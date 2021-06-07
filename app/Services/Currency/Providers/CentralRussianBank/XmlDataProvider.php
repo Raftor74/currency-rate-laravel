@@ -35,7 +35,8 @@ class XmlDataProvider implements IDataProvider
         try {
             return $this->client->fetchXml();
         } catch (InvalidResponseException $exception) {
-            throw new DataProviderException('Cannot fetch data from Central Bank of Russia');
+            $error = sprintf('Cannot fetch data from Central Bank of Russia: %s', $exception->getMessage());
+            throw new DataProviderException($error);
         }
     }
 
