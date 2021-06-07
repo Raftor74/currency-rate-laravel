@@ -14,7 +14,7 @@ class XmlDataProviderTest extends TestCase
     /** @test */
     public function provider_return_correct_currency_rate()
     {
-        $charCode = 'USD';
+        $charCode = 'EUR';
         $xml = $this->getTestXml();
         $xmlClientMock = Mockery::mock(XmlClient::class, function (MockInterface $mock) use ($xml) {
             $mock->makePartial()
@@ -29,8 +29,8 @@ class XmlDataProviderTest extends TestCase
         $currencyRate = $dataProvider->fetchCurrencyRateByCharCode($charCode);
 
         $this->assertEquals($charCode, $currencyRate->charCode());
-        $this->assertEquals('Американский доллар', $currencyRate->name());
-        $this->assertEquals(72.9294, $currencyRate->price());
+        $this->assertEquals('Евро', $currencyRate->name());
+        $this->assertEquals(88.6530, $currencyRate->price());
         $this->assertEquals(1, $currencyRate->quantity());
     }
 
