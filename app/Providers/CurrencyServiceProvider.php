@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Events\BeforeCurrencyUpdated;
+use App\Listeners\SaveCurrencyHistory;
 use App\Services\Currency\Contracts\IDataProvider;
 use App\Services\Currency\Providers\CentralRussianBank\XmlDataProvider;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class CurrencyServiceProvider extends ServiceProvider
@@ -26,5 +29,7 @@ class CurrencyServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->singleton(IDataProvider::class, XmlDataProvider::class);
+
+        Event::listen(BeforeCurrencyUpdated::class, [SaveCurrencyHistory::class, 'handle']);
     }
 }
