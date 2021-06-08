@@ -2,7 +2,7 @@
 
 namespace App\Services\Currency;
 
-use App\Events\BeforeCurrencyUpdated;
+use App\Events\BeforeCurrencyUpdate;
 use App\Models\Currency;
 use App\Services\Currency\Collections\CurrencyRateCollection;
 use App\Services\Currency\Models\CurrencyRate;
@@ -42,7 +42,7 @@ class CurrencyRateStorage
 
     public function updateCurrencyRate(CurrencyRate $currencyRate, Currency $currency): Currency
     {
-        BeforeCurrencyUpdated::dispatch($currency);
+        BeforeCurrencyUpdate::dispatch($currency);
 
         $attributes = $this->makeCurrencyRateStoreAttributes($currencyRate);
         $currency->fill($attributes)->save();

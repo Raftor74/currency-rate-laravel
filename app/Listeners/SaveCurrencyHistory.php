@@ -2,17 +2,17 @@
 
 namespace App\Listeners;
 
-use App\Events\BeforeCurrencyUpdated;
+use App\Events\BeforeCurrencyUpdate;
 
 class SaveCurrencyHistory
 {
     /**
      * Handle the event.
      *
-     * @param  BeforeCurrencyUpdated  $event
+     * @param  BeforeCurrencyUpdate  $event
      * @return void
      */
-    public function handle(BeforeCurrencyUpdated $event)
+    public function handle(BeforeCurrencyUpdate $event)
     {
         $event->currency->saveToHistory();
     }
