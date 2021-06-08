@@ -19,7 +19,7 @@
 
 `php artisan currency_rates:update`
 
-Для обновления всех курса валюты по коду используется artisan команда:
+Для обновления курса валюты по коду используется artisan команда:
 
 `php artisan currency_rates:update *код валюты*`
 
