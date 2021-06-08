@@ -25,7 +25,7 @@ class CurrencyRateCollection implements \Iterator, \Countable
 
     public function count(): int
     {
-        return $this->count();
+        return count($this->collection);
     }
 
     public function getByCharCode(string $charCode): ?CurrencyRate
